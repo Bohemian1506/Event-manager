@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: web
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/eventpay_manager_development
+      RAILS_ENV: development
+    stdin_open: true
+    tty: true
+
+  db:
+    container_name: db
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: eventpay_manager_development
+
+volumes:
+  postgres_data:
+  bundle_cache:

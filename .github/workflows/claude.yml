@@ -1,0 +1,55 @@
+name: Claude Code Assistant - EventPay Manager
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude-assistant:
+    # @claudeメンションがある場合のみ実行
+    if: |
+      contains(github.event.comment.body, '@claude') || 
+      contains(github.event.review.body, '@claude') || 
+      contains(github.event.issue.body, '@claude')
+    
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # 初学者向けEventPay Managerプロジェクト用のカスタム指示
+          custom-instructions: |
+            EventPay Managerは初学者向けのRailsプロジェクトです。以下を重視してください：
+            
+            1. **学習重視**: コードには日本語コメントを適切に付ける
+            2. **シンプル実装**: 複雑な設定や機能は避ける
+            3. **Rails基本**: MVCパターンを明確にした実装
+            4. **Docker環境**: Docker + Docker Compose前提での回答
+            5. **段階的説明**: 初学者にも理解できる段階的な説明
+            
+            技術スタック:
+            - Ruby 3.3.0 + Rails 8.x
+            - PostgreSQL 15
+            - Bootstrap 5 + Stimulus
+            - Devise (基本設定)
+            - Docker環境

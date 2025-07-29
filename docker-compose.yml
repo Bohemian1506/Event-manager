@@ -1,13 +1,14 @@
-version: '3.9'
-
 services:
   web:
     container_name: web
-    build: .
+    build:
+      context: .
+      target: development  # 開発用ステージを追加
     command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"
     volumes:
-      - .:/rails
+      - .:/myapp
       - bundle_cache:/usr/local/bundle
+      - node_modules:/myapp/node_modules  # Node.jsキャッシュ
     ports:
       - "3000:3000"
     depends_on:
@@ -30,3 +31,4 @@ services:
 volumes:
   postgres_data:
   bundle_cache:
+  node_modules:

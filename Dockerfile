@@ -52,6 +52,15 @@ RUN bundle install && \
 COPY package.json yarn.lock ./
 RUN yarn install --immutable
 
+# development stage
+FROM build AS development
+ENV RAILS_ENV="development"
+ENV BUNDLE_WITHOUT=""
+COPY . .
+RUN bundle install
+EXPOSE 3000
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+
 # Copy application code
 COPY . .
 

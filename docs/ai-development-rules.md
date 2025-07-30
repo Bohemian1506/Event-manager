@@ -168,7 +168,9 @@ docker-compose exec web bundle exec rubocop
 
 ## 関連ドキュメント
 - **[開発ルール](development-rules.md)**: 基本的なコーディング規約
-- **[GitHubワークフロー](github-workflow.md)**: PR作成・管理方法
+- **[GitHub環境構築](github-setup.md)**: GitHub CLI セットアップ
+- **[GitHubワークフロー](github-workflow.md)**: Issue、PR作成・管理方法
+- **[Claude Code自動ワークフロー](claude-code-workflow.md)**: Claude Code特化運用ルール
 - **[セットアップガイド](setup.md)**: 環境構築手順
 - **zen-mcp-server/CLAUDE.md**: AI協調開発の技術詳細
 - **zen-mcp-server/docs/ai-collaboration.md**: AI間会話機能説明

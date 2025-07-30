@@ -88,6 +88,8 @@ APP_DOMAIN=eventpay.example.com
 - **[セットアップガイド](docs/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
 - **[GitHubワークフロー](docs/github-workflow.md)** - ghコマンド運用、PR作成・管理方法
 - **[AI開発ルール](docs/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
+- **[画面遷移図](docs/screen-flow.md)** - 全画面の遷移とユーザーフロー
+- **[Issueテンプレート](docs/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
 
 ## 重要ポイント
 - **幹事認証**: Rails 8標準認証（has_secure_password）

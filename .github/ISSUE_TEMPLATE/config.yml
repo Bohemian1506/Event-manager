@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 ドキュメント
+    url: https://github.com/Bohemian1506/eventpay_manager/tree/main/docs
+    about: プロジェクトの技術ドキュメントを確認できます
+  - name: 💬 ディスカッション
+    url: https://github.com/Bohemian1506/eventpay_manager/discussions
+    about: 新機能のアイデアや質問はこちらで議論しましょう

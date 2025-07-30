@@ -12,7 +12,7 @@
 - **Components**: ViewComponent
 - **Mail**: SendGrid
 - **Development**: Docker Compose
-- **GitHub CLI**: gh コマンド（PR作成・管理用）
+- **GitHub CLI**: gh コマンド（PR作成・管理、Issue作成・テンプレート利用）
 
 ## 認証システム
 - **幹事**: Rails 8標準認証（メール+パスワード）

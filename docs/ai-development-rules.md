@@ -166,11 +166,127 @@ docker-compose exec web bundle exec rubocop
 - **四半期**: ルール・プロセスの見直し、改善
 - **年次**: AI技術進歩に応じたルール大幅更新
 
+## zen-mcp-server 運用ガイドライン
+
+### 1. 基本的な使用方法
+
+#### コマンド形式
+```bash
+# 基本形式
+/ツール名 "プロンプト"
+
+# モデル指定
+/ツール名 "model: gemini-pro
+プロンプト"
+
+# 会話継続
+/ツール名 "continuation_id: 前回のID
+追加の指示"
+```
+
+#### 主要ツールと推奨用途
+- `/chat` - 一般的な質問、ブレインストーミング（auto）
+- `/thinkdeep` - 複雑な問題の深い分析（gemini-pro, o3）
+- `/consensus` - 設計判断の合意形成（複数モデル）
+- `/codereview` - 包括的なコードレビュー（gemini-pro）
+- `/debug` - バグの根本原因分析（o3）
+- `/secaudit` - セキュリティ監査（gemini-pro）
+- `/analyze` - アーキテクチャ分析（gemini-pro）
+- `/refactor` - リファクタリング提案（auto）
+- `/testgen` - テストコード生成（o3）
+- `/precommit` - コミット前チェック（flash）
+
+### 2. 効果的な活用パターン
+
+#### 段階的アプローチ
+```bash
+# 1. 高速な初期チェック
+/codereview "model: flash
+基本的なチェックを実行"
+
+# 2. 問題があれば深掘り
+/thinkdeep "model: gemini-pro
+thinking_mode: high
+[具体的な問題の分析]"
+
+# 3. 複数視点での検証
+/consensus "models: [
+  {model: 'gemini-pro', stance: 'for'},
+  {model: 'o3', stance: 'against'}
+]
+提案された解決策の評価"
+```
+
+#### 会話の継続性活用
+```bash
+# AI間で情報を引き継ぎながら問題解決
+/analyze → /debug → /refactor → /testgen
+（continuation_idで接続）
+```
+
+### 3. コスト最適化
+
+#### モデル選択の指針
+- **Flash（低コスト）**: スタイルチェック、簡単な確認
+- **O3-mini（中コスト）**: バランスの取れた分析
+- **Gemini Pro / O3（高コスト）**: 複雑な問題、重要な判断
+
+#### 効率的な使用
+- 定型タスクは低コストモデル
+- 重要な判断のみ高性能モデル
+- バッチ処理で複数ファイルを効率的に処理
+
+### 4. 品質保証プロセス
+
+#### AI協調レビューフロー
+1. **Flash**で基本チェック（構文、スタイル）
+2. **Gemini Pro**でアーキテクチャレビュー
+3. **O3**でロジック検証
+4. **人間**による最終確認
+
+#### 継続的な品質向上
+- レビュー結果の蓄積と分析
+- よくある問題パターンの特定
+- AIへのフィードバックループ構築
+
+### 5. トラブルシューティング
+
+#### ログ確認
+```bash
+# リアルタイムログ監視
+tail -f /home/bohemian1506/ai-development/zen-mcp-server/logs/mcp_server.log
+
+# エラー確認
+grep "ERROR" logs/mcp_server.log | tail -20
+
+# ツール実行履歴
+tail -f logs/mcp_activity.log
+```
+
+#### 一般的な問題と対処
+- **タイムアウト**: thinking_modeを下げる
+- **コンテキスト超過**: 会話を分割
+- **APIエラー**: キーの残高確認、レート制限確認
+
+### 6. セキュリティとコンプライアンス
+
+#### APIキー管理
+- 環境変数での管理徹底
+- 定期的なキーローテーション
+- アクセスログの監視
+
+#### データ保護
+- センシティブ情報のマスキング
+- ログの適切な管理
+- AIへの入力内容の事前確認
+
 ## 関連ドキュメント
 - **[開発ルール](development-rules.md)**: 基本的なコーディング規約
 - **[GitHub環境構築](github-setup.md)**: GitHub CLI セットアップ
 - **[GitHubワークフロー](github-workflow.md)**: Issue、PR作成・管理方法
 - **[Claude Code自動ワークフロー](claude-code-workflow.md)**: Claude Code特化運用ルール
 - **[セットアップガイド](setup.md)**: 環境構築手順
+- **[zen-mcp-setup.md](zen-mcp-setup.md)**: zen-mcp-server詳細セットアップガイド
+- **[zen-mcp-workflow.md](zen-mcp-workflow.md)**: zen-mcp-server実践的ワークフロー
 - **zen-mcp-server/CLAUDE.md**: AI協調開発の技術詳細
 - **zen-mcp-server/docs/ai-collaboration.md**: AI間会話機能説明

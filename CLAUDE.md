@@ -99,3 +99,9 @@ APP_DOMAIN=eventpay.example.com
 - **セキュリティ**: トークン暗号化、CSRF保護
 - **パフォーマンス**: N+1対策、適切なインデックス設定
 
+## AI協調開発環境
+複数AIを活用した高品質な開発のため、**zen-mcp-server**を使用：
+- **[zen-mcp-setup.md](docs/zen-mcp-setup.md)** - セットアップガイド
+- **[zen-mcp-workflow.md](docs/zen-mcp-workflow.md)** - 実践的な使用例
+- **[ai-development-rules.md](docs/ai-development-rules.md)** - AI協調開発ルール
+

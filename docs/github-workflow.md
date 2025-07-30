@@ -60,8 +60,16 @@ git branch
 
 ### 1. Issue作成（機能開発開始時）
 ```bash
-# Issue作成
-gh issue create --title "参加者登録機能の実装" --body "参加者が共有URLから登録できる機能を実装する"
+# Issue作成（テンプレート使用）
+gh issue create
+
+# 特定のテンプレートを指定
+gh issue create --template feature_request.md
+gh issue create --template bug_report.md
+gh issue create --template improvement.md
+
+# Issue作成（詳細指定）
+gh issue create --template feature_request.md --title "[機能追加] 参加者登録機能の実装" --label "enhancement,feature,phase-1"
 
 # Issue一覧確認
 gh issue list

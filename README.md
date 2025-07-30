@@ -1,5 +1,7 @@
 # README
 
+<!-- 自動PR作成機能テスト用マーカー: 2025-07-30 -->
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 

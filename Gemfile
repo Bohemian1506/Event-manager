@@ -21,7 +21,7 @@ gem "jbuilder"
 
 # UI・コンポーネント系
 gem "view_component"
-gem "jquery-rails" 
+gem "jquery-rails"
 gem "bootstrap-icons-helper"
 
 # 日本語化
@@ -69,7 +69,7 @@ group :development, :test do
 
   # テスト環境
   gem "rspec-rails"
-  gem "factory_bot_rails" 
+  gem "factory_bot_rails"
   gem "faker"
 end
 

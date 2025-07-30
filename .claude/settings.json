@@ -1,0 +1,78 @@
+{
+  "project": {
+    "name": "EventPay Manager",
+    "description": "飲み会の幹事負担を軽減する、参加者登録不要の出欠・精算管理アプリ",
+    "type": "rails",
+    "version": "8.0.0"
+  },
+  "automation": {
+    "auto_pr_creation": {
+      "enabled": true,
+      "on_push": true,
+      "draft_mode": true,
+      "skip_patterns": ["[skip-pr]", "WIP:", "wip:"],
+      "title_format": {
+        "feature": "feat: {branch_name}",
+        "fix": "fix: {branch_name}",
+        "refactor": "refactor: {branch_name}",
+        "default": "{commit_message}"
+      }
+    },
+    "auto_branch_creation": {
+      "enabled": true,
+      "base_branch": "main",
+      "naming_convention": "{type}/{description}",
+      "types": ["feature", "fix", "refactor", "docs", "test", "chore"]
+    },
+    "quality_checks": {
+      "pre_push": {
+        "enabled": true,
+        "rubocop": true,
+        "rspec": true,
+        "brakeman": true,
+        "fail_on_error": true
+      },
+      "pre_commit": {
+        "enabled": false,
+        "lint_staged": false
+      }
+    }
+  },
+  "ai_integration": {
+    "zen_mcp_server": {
+      "enabled": true,
+      "auto_suggest": true,
+      "default_model": "gemini-flash",
+      "cost_optimization": true,
+      "suggestions": {
+        "new_feature": "/consensus",
+        "bug_fix": "/debug", 
+        "security_code": "/secaudit",
+        "pre_commit": "/precommit",
+        "code_review": "/codereview",
+        "refactoring": "/refactor",
+        "testing": "/testgen"
+      }
+    }
+  },
+  "workflows": {
+    "github_actions": {
+      "auto_pr_workflow": ".github/workflows/auto-pr.yml",
+      "auto_branch_workflow": ".github/workflows/auto-branch.yml",
+      "ci_workflow": ".github/workflows/ci.yml",
+      "claude_assistant": ".github/workflows/claude.yml"
+    }
+  },
+  "development": {
+    "docker": {
+      "enabled": true,
+      "compose_file": "docker-compose.yml",
+      "services": ["web", "db"]
+    },
+    "ruby_version": "3.3.6",
+    "rails_version": "8.0.0",
+    "database": "postgresql",
+    "css_framework": "bootstrap",
+    "js_framework": "stimulus"
+  }
+}

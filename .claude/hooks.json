@@ -1,0 +1,131 @@
+{
+  "hooks": {
+    "file_create": {
+      "enabled": true,
+      "triggers": [
+        {
+          "pattern": "app/controllers/**/*.rb",
+          "action": "suggest_test_creation",
+          "message": "コントローラーが作成されました。対応するテストファイルの作成を推奨します。"
+        },
+        {
+          "pattern": "app/models/**/*.rb", 
+          "action": "suggest_test_creation",
+          "message": "モデルが作成されました。対応するテストファイルとバリデーションの確認を推奨します。"
+        },
+        {
+          "pattern": "app/views/**/*.erb",
+          "action": "suggest_system_test",
+          "message": "ビューが作成されました。システムテストの作成を推奨します。"
+        }
+      ]
+    },
+    "file_edit": {
+      "enabled": true,
+      "triggers": [
+        {
+          "pattern": "**/*authentication*",
+          "action": "security_review",
+          "message": "認証関連のコードが変更されました。セキュリティレビューを実行しますか？",
+          "auto_suggest": "/secaudit"
+        },
+        {
+          "pattern": "**/*payment*",
+          "action": "security_review", 
+          "message": "決済関連のコードが変更されました。セキュリティレビューを実行しますか？",
+          "auto_suggest": "/secaudit"
+        },
+        {
+          "pattern": "config/**/*.rb",
+          "action": "config_review",
+          "message": "設定ファイルが変更されました。影響範囲の分析を推奨します。",
+          "auto_suggest": "/analyze"
+        }
+      ]
+    },
+    "commit": {
+      "enabled": true,
+      "triggers": [
+        {
+          "pattern": "^feat:|新機能",
+          "action": "feature_review",
+          "message": "新機能実装では複数AIによる設計検討が効果的です。/consensusで設計合意を形成しませんか？",
+          "auto_suggest": "/consensus"
+        },
+        {
+          "pattern": "^fix:|バグ|エラー",
+          "action": "bug_analysis",
+          "message": "複雑な問題の根本原因分析が必要です。/debugで詳細分析を実行しませんか？",
+          "auto_suggest": "/debug"
+        },
+        {
+          "pattern": "^refactor:",
+          "action": "refactor_review",
+          "message": "リファクタリングの最適な方針を検討します。/refactorで改善提案を実行しませんか？",
+          "auto_suggest": "/refactor"
+        }
+      ]
+    },
+    "pre_push": {
+      "enabled": true,
+      "actions": [
+        {
+          "name": "quality_check",
+          "message": "コミット前の品質チェックを実行します。/precommitで包括的なチェックを行いませんか？",
+          "auto_suggest": "/precommit",
+          "mandatory": true
+        }
+      ]
+    },
+    "task_completion": {
+      "enabled": true,
+      "triggers": [
+        {
+          "condition": "large_implementation",
+          "action": "code_review",
+          "message": "実装完了後のコードレビューが推奨されます。/codereviewで包括的なレビューを実行しますか？",
+          "auto_suggest": "/codereview"
+        },
+        {
+          "condition": "architecture_change",
+          "action": "impact_analysis", 
+          "message": "アーキテクチャ変更の影響分析を行います。/analyzeで詳細分析を実行しませんか？",
+          "auto_suggest": "/analyze"
+        },
+        {
+          "condition": "test_needed",
+          "action": "test_generation",
+          "message": "包括的なテストケース生成を行います。/testgenでテスト生成を実行しませんか？",
+          "auto_suggest": "/testgen"
+        }
+      ]
+    }
+  },
+  "user_preferences": {
+    "auto_execute_mandatory": false,
+    "show_suggestions": true,
+    "suggestion_timeout": 10,
+    "cost_conscious_mode": true,
+    "preferred_models": {
+      "quick_check": "gemini-flash",
+      "detailed_analysis": "gemini-pro", 
+      "logical_problems": "o3",
+      "general_purpose": "auto"
+    }
+  },
+  "notification_settings": {
+    "hook_execution": {
+      "enabled": true,
+      "level": "info"
+    },
+    "suggestion_display": {
+      "enabled": true,
+      "format": "inline",
+      "duration": 5000
+    },
+    "error_reporting": {
+      "enabled": true,
+      "level": "error"
+    }
+  }
+}

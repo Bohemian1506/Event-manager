@@ -39,5 +39,4 @@
 /node_modules
 
 # Ignore work summary files (auto-generated documentation)
-/docs/work-summary/
-/docs/summaries/
+/docs/archives/

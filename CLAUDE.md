@@ -84,14 +84,14 @@ APP_DOMAIN=eventpay.example.com
 
 ## 開発について
 詳細な開発ルールとセットアップ手順は以下を参照：
-- **[開発ルール](docs/development-rules.md)** - コーディング規約、命名規則、実装ガイド
-- **[セットアップガイド](docs/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
-- **[GitHub環境構築](docs/github-setup.md)** - GitHub CLI セットアップ、認証設定
-- **[GitHubワークフロー](docs/github-workflow.md)** - Issue、PR、マージの基本フロー
-- **[Claude Code自動ワークフロー](docs/claude-code-workflow.md)** - 自動化手順、PRサマリー作成
-- **[AI開発ルール](docs/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
-- **[画面遷移図](docs/screen-flow.md)** - 全画面の遷移とユーザーフロー
-- **[Issueテンプレート](docs/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
+- **[開発ルール](docs/setup/development-rules.md)** - コーディング規約、命名規則、実装ガイド
+- **[セットアップガイド](docs/setup/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
+- **[GitHub環境構築](docs/workflows/github-setup.md)** - GitHub CLI セットアップ、認証設定
+- **[GitHubワークフロー](docs/workflows/github-workflow.md)** - Issue、PR、マージの基本フロー
+- **[Claude Code自動ワークフロー](docs/workflows/claude-code-workflow.md)** - 自動化手順、PRサマリー作成
+- **[AI開発ルール](docs/ai-development/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
+- **[画面遷移図](docs/specifications/screen-flow.md)** - 全画面の遷移とユーザーフロー
+- **[Issueテンプレート](docs/workflows/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
 
 ## 重要ポイント
 - **幹事認証**: Rails 8標準認証（has_secure_password）
@@ -101,9 +101,9 @@ APP_DOMAIN=eventpay.example.com
 
 ## AI協調開発環境
 複数AIを活用した高品質な開発のため、**zen-mcp-server**を使用：
-- **[zen-mcp-setup.md](docs/zen-mcp-setup.md)** - セットアップガイド
-- **[zen-mcp-workflow.md](docs/zen-mcp-workflow.md)** - 実践的な使用例
-- **[ai-development-rules.md](docs/ai-development-rules.md)** - AI協調開発ルール
+- **[zen-mcp-setup.md](docs/ai-development/zen-mcp-setup.md)** - セットアップガイド
+- **[zen-mcp-workflow.md](docs/ai-development/zen-mcp-workflow.md)** - 実践的な使用例
+- **[ai-development-rules.md](docs/ai-development/ai-development-rules.md)** - AI協調開発ルール
 
 
 # important-instruction-reminders

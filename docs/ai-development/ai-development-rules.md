@@ -443,11 +443,11 @@ Claude Codeの動作に以下のプロアクティブ提案機能を組み込む
 - 簡単な承諾/拒否の仕組み
 
 ## 関連ドキュメント
-- **[開発ルール](development-rules.md)**: 基本的なコーディング規約
-- **[GitHub環境構築](github-setup.md)**: GitHub CLI セットアップ
-- **[GitHubワークフロー](github-workflow.md)**: Issue、PR作成・管理方法
-- **[Claude Code自動ワークフロー](claude-code-workflow.md)**: Claude Code特化運用ルール
-- **[セットアップガイド](setup.md)**: 環境構築手順
+- **[開発ルール](../setup/development-rules.md)**: 基本的なコーディング規約
+- **[GitHub環境構築](../workflows/github-setup.md)**: GitHub CLI セットアップ
+- **[GitHubワークフロー](../workflows/github-workflow.md)**: Issue、PR作成・管理方法
+- **[Claude Code自動ワークフロー](../workflows/claude-code-workflow.md)**: Claude Code特化運用ルール
+- **[セットアップガイド](../setup/setup.md)**: 環境構築手順
 - **[zen-mcp-setup.md](zen-mcp-setup.md)**: zen-mcp-server詳細セットアップガイド
 - **[zen-mcp-workflow.md](zen-mcp-workflow.md)**: zen-mcp-server実践的ワークフロー
 - **zen-mcp-server/CLAUDE.md**: AI協調開発の技術詳細

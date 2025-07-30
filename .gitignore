@@ -40,3 +40,4 @@
 
 # Ignore work summary files (auto-generated documentation)
 /docs/work-summary/
+/summaries/

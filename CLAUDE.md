@@ -84,14 +84,14 @@ APP_DOMAIN=eventpay.example.com
 
 ## 開発について
 詳細な開発ルールとセットアップ手順は以下を参照：
-- **[開発ルール](docs/development-rules.md)** - コーディング規約、命名規則、実装ガイド
-- **[セットアップガイド](docs/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
-- **[GitHub環境構築](docs/github-setup.md)** - GitHub CLI セットアップ、認証設定
-- **[GitHubワークフロー](docs/github-workflow.md)** - Issue、PR、マージの基本フロー
-- **[Claude Code自動ワークフロー](docs/claude-code-workflow.md)** - 自動化手順、PRサマリー作成
-- **[AI開発ルール](docs/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
-- **[画面遷移図](docs/screen-flow.md)** - 全画面の遷移とユーザーフロー
-- **[Issueテンプレート](docs/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
+- **[開発ルール](docs/setup/development-rules.md)** - コーディング規約、命名規則、実装ガイド
+- **[セットアップガイド](docs/setup/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
+- **[GitHub環境構築](docs/workflows/github-setup.md)** - GitHub CLI セットアップ、認証設定
+- **[GitHubワークフロー](docs/workflows/github-workflow.md)** - Issue、PR、マージの基本フロー
+- **[Claude Code自動ワークフロー](docs/workflows/claude-code-workflow.md)** - 自動化手順、PRサマリー作成
+- **[AI開発ルール](docs/ai-development/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
+- **[画面遷移図](docs/specifications/screen-flow.md)** - 全画面の遷移とユーザーフロー
+- **[Issueテンプレート](docs/workflows/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
 
 ## 重要ポイント
 - **幹事認証**: Rails 8標準認証（has_secure_password）
@@ -101,7 +101,57 @@ APP_DOMAIN=eventpay.example.com
 
 ## AI協調開発環境
 複数AIを活用した高品質な開発のため、**zen-mcp-server**を使用：
-- **[zen-mcp-setup.md](docs/zen-mcp-setup.md)** - セットアップガイド
-- **[zen-mcp-workflow.md](docs/zen-mcp-workflow.md)** - 実践的な使用例
-- **[ai-development-rules.md](docs/ai-development-rules.md)** - AI協調開発ルール
+- **[zen-mcp-setup.md](docs/ai-development/zen-mcp-setup.md)** - セットアップガイド
+- **[zen-mcp-workflow.md](docs/ai-development/zen-mcp-workflow.md)** - 実践的な使用例
+- **[ai-development-rules.md](docs/ai-development/ai-development-rules.md)** - AI協調開発ルール
+
+
+# important-instruction-reminders
+## zen-mcp-server 自動提案システム
+
+zen-mcp-serverを使った複数AI協調開発を促進するため、以下の条件で自動的にツール使用を提案してください：
+
+### 必須提案条件（強く推奨）
+**新機能実装・設計時**:
+「新機能の実装では複数AIによる設計検討が効果的です。/consensusで設計合意を形成しませんか？」
+
+**コミット前・PR作成時**:
+「コミット前の品質チェックを実行します。/precommitで包括的なチェックを行いませんか？」
+
+**セキュリティ関連コード**:
+「セキュリティに関わるコードです。/secauditでセキュリティ監査を実行しませんか？」
+
+**複雑なバグ・エラー報告**:
+「複雑な問題の根本原因分析が必要です。/debugで詳細分析を実行しませんか？」
+
+### 推奨提案条件
+**コード実装完了後**:
+「実装完了後のコードレビューが推奨されます。/codereviewで包括的なレビューを実行しますか？」
+
+**アーキテクチャ変更後**:
+「アーキテクチャ変更の影響分析を行います。/analyzeで詳細分析を実行しませんか？」
+
+**リファクタリング検討時**:
+「リファクタリングの最適な方針を検討します。/refactorで改善提案を実行しませんか？」
+
+**テスト作成時**:
+「包括的なテストケース生成を行います。/testgenでテスト生成を実行しませんか？」
+
+### 提案形式
+```
+🤖 複数AI協調開発の提案
+
+この[タスク内容]では複数AIによる[分析種別]が効果的です。
+[ツール名]で[具体的な内容]を実行しませんか？
+
+実行する場合は「yes」または「y」と入力してください。
+```
+
+### 提案タイミング
+- ユーザーがタスクを完了した直後
+- 特定のキーワード（新機能、バグ、コミット、セキュリティ等）を検知した時
+- ファイルを大幅に変更・作成した後
+- 複雑な実装が完了した時
+
+この指示により、開発の要所で適切なzen-mcp-serverツールが自動提案され、高品質な複数AI協調開発が実現されます。
 

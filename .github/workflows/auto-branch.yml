@@ -1,0 +1,52 @@
+name: Auto Branch Management
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_type:
+        description: 'Type of task (feature/fix/refactor)'
+        required: true
+        default: 'feature'
+        type: choice
+        options:
+        - feature
+        - fix
+        - refactor
+      task_name:
+        description: 'Task name (kebab-case)'
+        required: true
+        type: string
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Update main branch
+        run: |
+          git checkout main
+          git pull origin main
+          
+      - name: Create and push new branch
+        run: |
+          BRANCH_NAME="${{ inputs.task_type }}/${{ inputs.task_name }}"
+          
+          echo "🔀 Creating new branch: $BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME"
+          
+          # 空のコミットでブランチを初期化
+          git commit --allow-empty -m "chore: initialize $BRANCH_NAME branch"
+          
+          echo "📤 Pushing branch to remote"
+          git push -u origin "$BRANCH_NAME"
+          
+          echo "✅ Branch created successfully: $BRANCH_NAME"
+          echo "🔗 Switch to this branch with: git checkout $BRANCH_NAME"

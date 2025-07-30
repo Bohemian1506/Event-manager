@@ -86,7 +86,7 @@ APP_DOMAIN=eventpay.example.com
 詳細な開発ルールとセットアップ手順は以下を参照：
 - **[開発ルール](docs/development-rules.md)** - コーディング規約、命名規則、実装ガイド
 - **[セットアップガイド](docs/setup.md)** - 環境構築、開発コマンド、トラブルシューティング
-- **[GitHubワークフロー](docs/github-workflow.md)** - ghコマンド運用、PR作成・管理方法
+- **[GitHubワークフロー](docs/github-workflow.md)** - ghコマンド運用、PR作成・管理、Claude Code自動ワークフロー
 - **[AI開発ルール](docs/ai-development-rules.md)** - 複数AI協調開発、zen-mcp-server運用ガイド
 - **[画面遷移図](docs/screen-flow.md)** - 全画面の遷移とユーザーフロー
 - **[Issueテンプレート](docs/issue-templates.md)** - GitHub Issue作成、MVP以降実装ロードマップ
@@ -96,3 +96,4 @@ APP_DOMAIN=eventpay.example.com
 - **参加者認証**: トークンベース（7日間有効、登録不要）
 - **セキュリティ**: トークン暗号化、CSRF保護
 - **パフォーマンス**: N+1対策、適切なインデックス設定
+

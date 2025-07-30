@@ -193,6 +193,8 @@ gh auth refresh
 3. ファイル名の確認（拡張子は`.md`）
 
 ## 関連ドキュメント
+- [GitHub環境構築](github-setup.md)
 - [GitHub ワークフロー](github-workflow.md)
+- [Claude Code自動ワークフロー](claude-code-workflow.md)
 - [画面遷移図](screen-flow.md)
 - [開発ルール](development-rules.md)

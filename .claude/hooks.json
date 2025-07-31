@@ -40,6 +40,33 @@
           "action": "config_review",
           "message": "設定ファイルが変更されました。影響範囲の分析を推奨します。",
           "auto_suggest": "/analyze"
+        },
+        {
+          "pattern": "**/*.rb",
+          "action": "commit_reminder",
+          "message": "💡 Rubyファイルが変更されました。実装完了後は 'npm run dev:commit' でコミットをお忘れなく！",
+          "auto_suggest": "npm run dev:commit",
+          "priority": "low",
+          "delay": 10000,
+          "show_once_per_session": true
+        },
+        {
+          "pattern": "**/*.js",
+          "action": "commit_reminder",
+          "message": "💡 JavaScriptファイルが変更されました。実装完了後は 'npm run dev:commit' でコミットをお忘れなく！",
+          "auto_suggest": "npm run dev:commit",
+          "priority": "low",
+          "delay": 10000,
+          "show_once_per_session": true
+        },
+        {
+          "pattern": "**/*.erb",
+          "action": "commit_reminder",
+          "message": "💡 ビューファイルが変更されました。実装完了後は 'npm run dev:commit' でコミットをお忘れなく！",
+          "auto_suggest": "npm run dev:commit",
+          "priority": "low",
+          "delay": 10000,
+          "show_once_per_session": true
         }
       ]
     },
@@ -97,6 +124,56 @@
           "action": "test_generation",
           "message": "包括的なテストケース生成を行います。/testgenでテスト生成を実行しませんか？",
           "auto_suggest": "/testgen"
+        }
+      ]
+    },
+    "work_start": {
+      "enabled": true,
+      "auto_execute": true,
+      "triggers": [
+        {
+          "condition": "session_start",
+          "action": "work_preparation",
+          "message": "🚀 EventPay Manager 作業開始の準備を行います",
+          "command": "npm run work:start",
+          "mandatory": true,
+          "description": "mainブランチ最新化とブランチ作成を自動実行"
+        },
+        {
+          "condition": "first_task",
+          "action": "reminder",
+          "message": "💡 作業開始時は 'npm run work:start' の実行を推奨します。git:update + dev:branch が自動実行されます。",
+          "auto_suggest": "npm run work:start"
+        }
+      ]
+    },
+    "work_completion": {
+      "enabled": true,
+      "auto_suggest": true,
+      "triggers": [
+        {
+          "condition": "files_modified",
+          "action": "commit_suggestion",
+          "message": "📝 ファイルが変更されました。作業完了時は 'npm run dev:commit' でコミットしませんか？",
+          "auto_suggest": "npm run dev:commit",
+          "description": "対話式コミット（ステージング・コミット・プッシュ）",
+          "priority": "medium",
+          "delay": 5000
+        },
+        {
+          "condition": "implementation_complete",
+          "action": "commit_prompt",
+          "message": "✅ 実装が完了しました。変更をコミットしますか？\n\n🎯 推奨: 'npm run dev:commit' で対話式コミット\n📋 内容: ファイルステージング → コミットタイプ選択 → メッセージ入力 → 自動プッシュ",
+          "auto_suggest": "npm run dev:commit",
+          "mandatory": false,
+          "show_options": true
+        },
+        {
+          "condition": "task_finished",
+          "action": "workflow_guidance",
+          "message": "🎉 タスクが完了しました！次のステップ:\n\n1. 📝 'npm run dev:commit' - 変更をコミット\n2. 🔍 PR確認 - 自動作成されたPRをレビュー\n3. 🤖 '@claude' メンション - PRレビューを依頼",
+          "auto_suggest": "npm run dev:commit",
+          "show_next_steps": true
         }
       ]
     }

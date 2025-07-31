@@ -73,6 +73,27 @@
     "rails_version": "8.0.0",
     "database": "postgresql",
     "css_framework": "bootstrap",
-    "js_framework": "stimulus"
+    "js_framework": "stimulus",
+    "work_start": {
+      "enabled": true,
+      "auto_execute": true,
+      "command": "npm run work:start",
+      "description": "作業開始時の自動化: git:update + dev:branch",
+      "prompt_user": true,
+      "show_help": true
+    },
+    "work_completion": {
+      "enabled": true,
+      "auto_suggest": true,
+      "command": "npm run dev:commit",
+      "description": "作業完了時の自動化: 対話式コミット・プッシュ",
+      "triggers": {
+        "file_changes": true,
+        "implementation_complete": true,
+        "task_finished": true
+      },
+      "suggestion_delay": 5000,
+      "show_workflow_guidance": true
+    }
   }
 }

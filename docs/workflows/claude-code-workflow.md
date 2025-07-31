@@ -179,6 +179,29 @@ npm run quality:check   # RuboCop + RSpec
 npm run security:scan   # Brakeman実行
 ```
 
+## 🎫 Issue 自動詳細化機能
+
+### 概要
+簡易的なIssueを作成後、`needs-details`ラベルを付けるだけで、Claude Codeが自動的に開発に必要な詳細情報を追加します。
+
+### 使用方法
+```bash
+# 1. 簡易的なIssue作成
+gh issue create --title "タイトル" --body "簡単な説明"
+
+# 2. ラベル付与で自動詳細化
+gh issue edit <issue-number> --add-label "needs-details"
+
+# 3. 数秒後、Issueが自動的に詳細化される
+```
+
+### 自動詳細化される内容
+- 技術的詳細と実装方針
+- 段階的な実装ステップ
+- 受け入れ基準（テスト可能）
+- セキュリティ・パフォーマンス考慮事項
+- 適切なラベルと優先度の提案
+
 ## 🤖 zen-mcp-server自動提案
 
 ### 自動提案される条件

@@ -1,14 +1,17 @@
-name: Claude PR Description Generator
+# GitHub ActionsでのPR本文自動生成を無効化
+# Claude Code側で手動生成するため一時的に無効
+name: Claude PR Description Generator (Disabled)
 
 on:
-  pull_request:
-    types: [opened]
+  # pull_request:
+  #   types: [opened]
+  workflow_dispatch:  # 手動実行のみ許可
 
 jobs:
   generate-pr-description:
     runs-on: ubuntu-latest
-    # 既存のPRが auto-pr.yml で作成された場合のみ実行
-    if: github.event.pull_request.user.login == 'github-actions[bot]'
+    # 無効化: Claude Code側で手動生成するため
+    if: false
     
     permissions:
       contents: read

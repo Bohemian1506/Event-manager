@@ -62,8 +62,8 @@
         "hooks": [
           {
             "type": "suggest",
-            "message": "🚀 プルリクエスト作成\n\nコミット・プッシュが完了しました。\nClaude CodeがPR本文を自動生成してプルリクエストを作成します。\n\n実行する場合は「yes」または「y」と入力してください。",
-            "command": "claude_create_pr"
+            "message": "🚀 プルリクエスト作成とPR本文生成\n\n✅ コミット・プッシュが完了しました\n📋 GitHub ActionsがPRを自動作成します（draft mode）\n🤖 Claude CodeでPR本文を生成しますか？\n\n実行する場合は「yes」または「y」と入力してください。",
+            "command": "npm run pr:update"
           }
         ]
       }

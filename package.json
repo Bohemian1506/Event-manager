@@ -14,6 +14,7 @@
     "dev:commit": "node scripts/auto-commit.js",
     "dev:push": "node scripts/auto-push.js",
     "dev:pr": "gh pr create --draft --title 'WIP: Auto-generated PR' --body 'Auto-generated pull request'",
+    "pr:update": "echo '🤖 Claude CodeでPR本文を生成中...' && claude --print 'このPRの本文を生成してgh pr editで更新してください。変更内容を分析し、EventPay Managerプロジェクトに適した高品質なPR本文を作成してください。'",
     "dev:setup": "npm run dev:branch && npm run dev:commit",
     "archive:create": "node scripts/create-archive.js",
     "git:update": "git checkout main && git pull origin main",

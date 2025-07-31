@@ -113,8 +113,9 @@ git push
 ## ⚙️ 設定ファイル説明
 
 ### `.github/workflows/auto-pr.yml`
-- プッシュ時に自動でドラフトPRを作成
+- プッシュ時に自動でPRを作成
 - ブランチ名からPRタイトルを自動生成
+- PR本文はClaude Codeが自動生成
 - 既存PR確認機能付き
 
 ### `.github/workflows/auto-branch.yml` 

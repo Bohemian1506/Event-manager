@@ -125,11 +125,18 @@ class GitUtils {
       
       // 同期状態を確認
       const syncStatus = this.checkRemoteSync('main');
-      if (syncStatus.isUpToDate || syncStatus.remoteNotExists) {
-        console.log('✅ mainブランチが最新に更新されました');
+      if (syncStatus.isUpToDate || syncStatus.remoteNotExists || syncStatus.needsPush) {
+        // 最新化完了（同期済み、リモート不存在、またはローカルが先行）
+        if (syncStatus.needsPush) {
+          console.log('✅ mainブランチが更新されました（ローカルがリモートより先行しています）');
+        } else {
+          console.log('✅ mainブランチが最新に更新されました');
+        }
         return { success: true, previousBranch: currentBranch };
+      } else if (syncStatus.needsPull) {
+        throw new Error('mainブランチがリモートより遅れています。再度実行してください。');
       } else {
-        throw new Error('mainブランチの同期に問題があります');
+        throw new Error('mainブランチの同期状態を確認できませんでした');
       }
       
     } catch (error) {

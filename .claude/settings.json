@@ -61,8 +61,9 @@
         "matcher": "npm run dev:commit",
         "hooks": [
           {
-            "type": "command",
-            "command": "gh pr create --draft --title 'Auto PR: $(git branch --show-current)' --body 'Automatically created PR after dev:commit completion.'"
+            "type": "suggest",
+            "message": "🚀 プルリクエスト作成\n\nコミット・プッシュが完了しました。\nClaude CodeがPR本文を自動生成してプルリクエストを作成します。\n\n実行する場合は「yes」または「y」と入力してください。",
+            "command": "claude_create_pr"
           }
         ]
       }

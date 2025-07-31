@@ -2,7 +2,7 @@
 
 const { execSync } = require('child_process');
 
-function workStartCli(branchType, taskName) {
+function workStartCli(branchType, taskDescription) {
   try {
     console.log('🚀 EventPay Manager - 作業開始自動化 (CLI)');
     console.log('');
@@ -18,6 +18,14 @@ function workStartCli(branchType, taskName) {
     console.log('🔀 Step 2: 新しいブランチを作成します');
     console.log('');
 
+    // タスク説明からkebab-caseのブランチ名を生成
+    const taskName = taskDescription
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // 特殊文字を除去
+      .replace(/\s+/g, '-') // スペースをハイフンに変換
+      .replace(/-+/g, '-') // 連続するハイフンを1つに
+      .replace(/^-|-$/g, ''); // 先頭・末尾のハイフンを除去
+    
     // ブランチ名を生成
     const branchName = `${branchType}/${taskName}`;
     
@@ -57,7 +65,7 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   
   if (args.length < 2) {
-    console.log('使用方法: node work-start-cli.js <type> <task-name>');
+    console.log('使用方法: node work-start-cli.js <type> "<task-description>"');
     console.log('');
     console.log('利用可能なタイプ:');
     console.log('  - feature (新機能)');
@@ -67,11 +75,16 @@ if (require.main === module) {
     console.log('  - test (テスト)');
     console.log('  - chore (その他)');
     console.log('');
-    console.log('例: node work-start-cli.js feature add-user-login');
+    console.log('例: node work-start-cli.js feature "Add user login functionality"');
+    console.log('    → ブランチ名: feature/add-user-login-functionality');
+    console.log('');
+    console.log('例: node work-start-cli.js fix "Fix payment processing bug"');
+    console.log('    → ブランチ名: fix/fix-payment-processing-bug');
     process.exit(1);
   }
 
-  const [branchType, taskName] = args;
+  const [branchType, ...taskParts] = args;
+  const taskDescription = taskParts.join(' ');
   const validTypes = ['feature', 'fix', 'refactor', 'docs', 'test', 'chore'];
   
   if (!validTypes.includes(branchType)) {
@@ -80,7 +93,7 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  workStartCli(branchType, taskName);
+  workStartCli(branchType, taskDescription);
 }
 
 module.exports = { workStartCli };

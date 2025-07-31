@@ -105,6 +105,22 @@ APP_DOMAIN=eventpay.example.com
 - **[zen-mcp-workflow.md](docs/ai-development/zen-mcp-workflow.md)** - 実践的な使用例
 - **[ai-development-rules.md](docs/ai-development/ai-development-rules.md)** - AI協調開発ルール
 
+## 作業アーカイブ自動化
+プルリクエスト作成後に作業内容を自動でアーカイブ保存：
+
+### 自動アーカイブ機能
+- **GitHub Actions**: `.github/workflows/archive-creation.yml`
+- **実行スクリプト**: `scripts/create-archive.js`
+- **コマンド**: `npm run archive:create`
+- **保存先**: `docs/archives/YYYY-MM-DD.md`
+
+### アーカイブ内容
+- 作業概要とブランチ情報
+- 変更ファイル一覧とカテゴリ分析
+- Git操作記録
+- 技術的成果と実装内容
+- 使用したワークフローと品質チェック
+
 
 # important-instruction-reminders
 ## zen-mcp-server 自動提案システム

@@ -1,0 +1,120 @@
+name: Archive Creation on PR
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+
+jobs:
+  create-archive:
+    # github-actions[bot]が作成したPRの場合のみ実行
+    if: github.event.pull_request.user.login == 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        # アーカイブ作成には履歴が必要
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Generate work archive
+      run: |
+        echo "📚 作業サマリーを自動生成しています..."
+        npm run archive:create
+        
+    - name: Check if archive was created
+      id: check_archive
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "archive_created=true" >> $GITHUB_OUTPUT
+          echo "新しいアーカイブファイルが作成されました"
+        else
+          echo "archive_created=false" >> $GITHUB_OUTPUT
+          echo "アーカイブファイルの作成をスキップしました"
+        fi
+        
+    - name: Commit and push archive
+      if: steps.check_archive.outputs.archive_created == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # 作成されたアーカイブファイルを取得
+        ARCHIVE_FILE=$(git status --porcelain | grep "docs/archives/" | head -1 | awk '{print $2}')
+        
+        if [ -n "$ARCHIVE_FILE" ]; then
+          git add "$ARCHIVE_FILE"
+          git commit -m "docs: 作業サマリーを自動生成 [archive-auto]
+          
+          🤖 GitHub Actionsによる自動生成
+          📄 ファイル: $ARCHIVE_FILE
+          🎯 対象PR: #${{ github.event.number }}
+          ⏰ 生成時刻: $(date '+%Y-%m-%d %H:%M:%S')"
+          
+          git push origin ${{ github.head_ref }}
+          
+          echo "✅ アーカイブファイルをコミット・プッシュしました: $ARCHIVE_FILE"
+        fi
+        
+    - name: Add archive comment to PR
+      if: steps.check_archive.outputs.archive_created == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // 最新のアーカイブファイルを検索
+          const archivesDir = path.join(process.cwd(), 'docs', 'archives');
+          const files = fs.readdirSync(archivesDir)
+            .filter(file => file.endsWith('.md') && file !== 'TEMPLATE.md')
+            .map(file => ({
+              name: file,
+              path: path.join(archivesDir, file),
+              mtime: fs.statSync(path.join(archivesDir, file)).mtime
+            }))
+            .sort((a, b) => b.mtime - a.mtime);
+            
+          if (files.length > 0) {
+            const latestArchive = files[0];
+            
+            const comment = `## 📚 作業サマリーが自動生成されました
+            
+🎯 **アーカイブファイル**: [\`docs/archives/${latestArchive.name}\`](https://github.com/${{ github.repository }}/blob/${{ github.head_ref }}/docs/archives/${latestArchive.name})
+
+このプルリクエストの作業内容が自動的にアーカイブとして保存されました。
+
+### 📋 含まれる情報
+- 実装した機能・修正内容
+- 変更されたファイル一覧
+- 使用した開発ワークフロー
+- Git操作記録
+- 技術的成果と学習事項
+
+---
+🤖 *GitHub Actionsによる自動生成*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          }
+          
+    - name: Archive creation summary
+      run: |
+        echo "🎉 アーカイブ作成ワークフロー完了"
+        echo "📊 実行結果:"
+        echo "  - アーカイブ作成: ${{ steps.check_archive.outputs.archive_created }}"
+        echo "  - 対象PR: #${{ github.event.number }}"
+        echo "  - ブランチ: ${{ github.head_ref }}"

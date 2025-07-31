@@ -22,6 +22,8 @@
     "git:clean": "git branch --merged main | grep -v main | xargs -n 1 git branch -d",
     "hooks:install": "cp -r .git/hooks/* .git/hooks/ && chmod +x .git/hooks/*",
     "quality:check": "docker-compose exec web bundle exec rubocop && docker-compose exec web bundle exec rspec",
-    "security:scan": "docker-compose exec web bundle exec brakeman --no-pager"
+    "security:scan": "docker-compose exec web bundle exec brakeman --no-pager",
+    "work:start:cli": "node scripts/work-start-cli.js",
+    "dev:branch:cli": "node scripts/create-branch-cli.js"
   }
 }

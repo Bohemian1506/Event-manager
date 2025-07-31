@@ -341,3 +341,50 @@ git push
 3. **追跡性**: アーカイブ自動生成による作業履歴管理
 4. **協調開発**: @claudeメンションによるレビュー依頼フロー
 
+## Claude Code 非対話形式コマンド
+
+Claude Codeから直接ブランチ作成を行うための非対話形式コマンドを提供しています。
+
+### 作業開始（CLI版）
+```bash
+# 作業開始を一括実行（mainブランチ更新 → ブランチ作成 → 初期設定）
+npm run work:start:cli <type> <task-name>
+
+# 例
+npm run work:start:cli feature add-user-authentication
+npm run work:start:cli fix resolve-payment-issue
+npm run work:start:cli docs update-readme
+```
+
+### ブランチ作成のみ（CLI版）
+```bash
+# ブランチ作成のみを実行
+npm run dev:branch:cli <type> <task-name>
+
+# 例
+npm run dev:branch:cli refactor improve-performance
+npm run dev:branch:cli test add-unit-tests
+```
+
+### 利用可能なブランチタイプ
+- `feature`: 新機能開発
+- `fix`: バグ修正
+- `refactor`: リファクタリング
+- `docs`: ドキュメント更新
+- `test`: テスト追加・修正
+- `chore`: その他の作業
+
+### Claude Codeでの推奨ワークフロー
+```bash
+# 1. 作業開始（非対話形式）
+npm run work:start:cli feature implement-qr-code
+
+# 2. 実装作業
+# ... ファイル編集 ...
+
+# 3. コミット（対話形式）
+npm run dev:commit
+
+# 4. PR作成はGitHub Actionsで自動実行
+```
+

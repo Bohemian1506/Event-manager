@@ -4,6 +4,18 @@
 
 ## 🚀 作業開始・完了コマンド
 
+### セッション開始
+```bash
+# 新しいセッション開始（自動mainブランチ更新）
+npm run session:start
+
+# セッション初期化（シンプル版）
+npm run session:init
+
+# 手動でmainブランチ切り替え（post-checkout hook自動実行）
+git checkout main
+```
+
 ### 作業開始
 ```bash
 # Claude連携型スマートワークフロー（推奨）
@@ -75,6 +87,10 @@ npm run dev:branch  # 対話式
 
 # Git hooks設定
 npm run hooks:install
+
+# セッション管理
+npm run session:start  # mainブランチ切り替え+最新化
+npm run session:init   # シンプルな初期化
 ```
 
 ### 品質チェック
@@ -277,4 +293,35 @@ npm run pr:create
 - 新しいコマンドを追加したらここにも記載
 - 不明点は`@claude`に質問
 
-🆙 **最新更新**: 2025-07-31 - Rails 8.0.2対応、npmスクリプト更新
+## 🔄 セッション管理機能
+
+### 自動mainブランチ更新
+新しいセッション開始時に自動でmainブランチを最新化する機能が実装されています。
+
+#### Git Post-Checkout Hook
+- mainブランチに切り替える際、自動的に最新のコミットをチェック
+- リモートに新しいコミットがある場合、安全に自動更新実行
+- 未コミット変更がある場合は警告表示
+
+#### セッション開始コマンド
+```bash
+# 推奨: 完全なセッション開始
+npm run session:start
+
+# シンプル: 基本的な初期化のみ
+npm run session:init
+
+# 手動: Git hook自動実行
+git checkout main
+```
+
+#### 動作フロー
+1. `git checkout main` 実行
+2. post-checkout hook が自動起動
+3. リモートから最新情報をフェッチ
+4. ローカルとリモートの差分をチェック
+5. 安全に自動更新または警告表示
+
+---
+
+🆙 **最新更新**: 2025-08-01 - セッション自動更新機能追加、Rails 8.0.2対応

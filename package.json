@@ -27,6 +27,8 @@
     "quality:check": "docker-compose exec web bundle exec rubocop && docker-compose exec web bundle exec rspec",
     "security:scan": "docker-compose exec web bundle exec brakeman --no-pager",
     "work:start:cli": "node scripts/work-start-cli.js",
-    "dev:branch:cli": "node scripts/create-branch-cli.js"
+    "dev:branch:cli": "node scripts/create-branch-cli.js",
+    "session:start": "git checkout main && npm run git:update && echo '🚀 新しいセッション開始準備完了'",
+    "session:init": "git checkout main && git pull origin main && echo '✅ セッション初期化完了 - 最新のmainブランチから開始できます'"
   }
 }

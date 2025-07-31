@@ -2,25 +2,41 @@
 
 ## 🚨 作業開始時の自動実行手順（必須）
 
+### 🎯 NEW! 完全自動化ワークフロー
+**最推奨**: `npm run work:start` でワンコマンド作業開始⭐
+- ✅ Git状態の安全性チェック
+- ✅ mainブランチ自動最新化  
+- ✅ 対話式ブランチ作成
+- ✅ 初期コミット・プッシュ
+- ✅ 次のステップ案内
+
 ### 自動化システムの概要
 EventPay Managerでは以下の自動化が設定されています：
 
-1. **プッシュ時の自動PR作成** - GitHubワークフローで実行
-2. **品質チェック** - Git pre-pushフックで実行  
-3. **zen-mcp-server自動提案** - post-commitフックで実行
-4. **開発支援スクリプト** - package.jsonで定義
+1. **作業開始の完全自動化** - work-start.js で実行（NEW!）
+2. **プッシュ時の自動PR作成** - GitHubワークフローで実行
+3. **品質チェック** - Git pre-pushフックで実行  
+4. **zen-mcp-server自動提案** - post-commitフックで実行
+5. **開発支援スクリプト** - package.jsonで定義
 
 ## 🔄 自動化の仕組み
 
-### A. ブランチ作成の自動化
+### A. 作業開始の完全自動化（NEW! 🎯）
 ```bash
-# 方法1: npm script使用（推奨）
+# 方法1: 完全自動化ワークフロー（最推奨 ⭐）
+npm run work:start
+# → 安全性チェック + main最新化 + ブランチ作成 + 初期設定
+
+# 方法2: Git状態確認のみ
+npm run work:check
+
+# 方法3: 従来のブランチ作成（改良版）
 npm run dev:branch
 
-# 方法2: GitHub Actions経由
+# 方法4: GitHub Actions経由
 # リポジトリのActionsタブから「Auto Branch Management」を実行
 
-# 方法3: 手動（従来通り）
+# 方法5: 手動（従来通り）
 git checkout main
 git pull origin main
 git checkout -b feature/task-name
@@ -54,11 +70,15 @@ npm run dev:pr
 
 ## 📋 実際の作業フロー
 
-### 1. 新機能開発フロー（完全自動化）
+### 1. 新機能開発フロー（完全自動化 - NEW! 🎯）
 ```bash
-# 1. ブランチ作成（対話形式）
-npm run dev:branch
-# → feature/user-authentication ブランチを作成・プッシュ
+# 1. 作業開始（完全自動化）⭐
+npm run work:start
+# → 安全性チェック実行
+# → mainブランチ自動最新化
+# → 対話式ブランチ作成
+# → 初期コミット・プッシュ
+# → 次のステップ案内
 
 # 2. 実装作業
 # ファイル編集・コード実装
@@ -73,10 +93,19 @@ npm run dev:commit
 #  /consensusで設計合意を形成しませんか？」
 ```
 
+### 1-1. 従来フロー（改良版）
+```bash
+# 1. ブランチ作成（安全性チェック付き）
+npm run dev:branch
+# → 安全性チェック + ブランチ作成・プッシュ
+
+# 2-4. 以下は同じ
+```
+
 ### 2. バグ修正フロー（半自動化）
 ```bash
 # 1. 緊急ブランチ作成
-git checkout -b fix/critical-bug
+npm run work:start  # または npm run dev:branch
 
 # 2. 修正作業
 # バグ修正コード
@@ -140,9 +169,15 @@ git push
 
 ## 🛠️ 利用可能なコマンド
 
+### 作業開始コマンド（NEW! 🎯）
+```bash
+npm run work:start      # 完全自動化ワークフロー（最推奨⭐）
+npm run work:check      # Git状態確認のみ
+```
+
 ### 開発支援コマンド
 ```bash
-npm run dev:branch      # 対話式ブランチ作成
+npm run dev:branch      # 対話式ブランチ作成（改良版）
 npm run dev:commit      # 対話式コミット
 npm run dev:push        # 安全なプッシュ
 npm run dev:pr          # 手動PR作成
@@ -245,13 +280,17 @@ cat .claude/hooks.json
 
 ## 🎯 ベストプラクティス
 
-### 推奨フロー
-1. **作業開始**: `npm run dev:branch`でブランチ作成
+### 推奨フロー（NEW! 🎯）
+1. **作業開始**: `npm run work:start`で完全自動化ワークフロー実行⭐
 2. **実装作業**: コード作成・編集
 3. **コミット**: `npm run dev:commit`で対話式コミット
 4. **品質確認**: 自動フックで品質チェック実行
 5. **AI協調**: zen-mcp-server提案に従って複数AI活用
 6. **PR確認**: 自動作成されたPRをレビュー・マージ
+
+### 従来フロー（改良版）
+1. **作業開始**: `npm run dev:branch`でブランチ作成（安全性チェック付き）
+2-6. **以下同じ**
 
 ### 注意事項
 - メインブランチへの直接作業は自動的に防止されます

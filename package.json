@@ -9,6 +9,8 @@
   },
   "scripts": {
     "build:css": "sass app/assets/stylesheets/application.bootstrap.scss:app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "work:start": "node scripts/work-start.js",
+    "work:check": "node scripts/git-utils.js",
     "dev:branch": "node scripts/create-branch.js",
     "dev:commit": "node scripts/auto-commit.js",
     "dev:push": "node scripts/auto-push.js",

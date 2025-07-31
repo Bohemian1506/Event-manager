@@ -119,47 +119,6 @@ npm run pr:update
 npm run archive:create
 ```
 
-## 🛠️ 技術スタック
-
-### 基本構成
-- **Ruby**: 3.3.6
-- **Rails**: 8.0.2 (標準認証)
-- **Database**: PostgreSQL 15-alpine
-- **CSS**: Bootstrap 5.3
-- **JS**: Stimulus + Importmap
-- **Mail**: SendGrid
-- **Assets**: Propshaft + CSS Bundling
-
-### 主要Gem
-- **view_component**: コンポーネント管理
-- **jquery-rails** + **bootstrap-icons-helper**: UI補強
-- **rails-i18n** + **enum_help**: 日本語化
-- **sendgrid-ruby**: メール送信
-- **rqrcode**: QRコード生成
-- **solid_queue** + **solid_cache** + **solid_cable**: Rails 8標準
-- **rspec-rails** + **factory_bot_rails** + **faker**: テスト
-- **rubocop-rails-omakase**: コード品質
-- **brakeman**: セキュリティ監査
-
-## 🏗️ アーキテクチャ
-
-### 認証システム
-- **幹事**: Rails 8標準認証（メール+パスワード）
-- **参加者**: トークンベース（7日間有効、登録不要）
-
-### データベース構造
-- **users**: 幹事（Rails 8標準認証）
-- **events**: イベント（share_token含む）
-- **rounds**: 各回（1次会、2次会等）
-- **participants**: 参加者（edit_token含む）
-- **participations**: 参加状況（参加/支払い管理）
-
-### ViewComponent
-- **ParticipantCardComponent**: 参加者カード
-- **PaymentStatusComponent**: 支払い状況バッジ
-- **RoundCardComponent**: n次会カード
-- **EventHeaderComponent**: イベントヘッダー
-
 ## 🤖 AI協調開発
 
 ### zen-mcp-server連携
@@ -187,26 +146,6 @@ npm run archive:create
 - PR作成・更新: `@claude` メンション
 - 高品質PR本文自動生成
 - 技術的質問・実装相談
-
-## 📚 ドキュメントショートカット
-
-### セットアップ・開発ルール
-- [開発ルール](../setup/development-rules.md) - コーディング規約、命名規則
-- [セットアップガイド](../setup/setup.md) - 環境構築、トラブルシューティング
-
-### ワークフロー
-- [GitHub環境構築](../workflows/github-setup.md) - GitHub CLI設定
-- [GitHubワークフロー](../workflows/github-workflow.md) - Issue、PR、マージフロー
-- [Claude Code自動ワークフロー](../workflows/claude-code-workflow.md) - 自動化手順
-
-### AI開発
-- [AI開発ルール](../ai-development/ai-development-rules.md) - 複数AI協調開発
-- [zen-mcp-setup](../ai-development/zen-mcp-setup.md) - セットアップガイド
-- [zen-mcp-workflow](../ai-development/zen-mcp-workflow.md) - 実践例
-
-### 仕様
-- [画面遷移図](../specifications/screen-flow.md) - 全画面の遷移とフロー
-- [Issueテンプレート](../workflows/issue-templates.md) - GitHub Issue作成
 
 ## 🔧 トラブルシューティング
 
@@ -324,4 +263,4 @@ git checkout main
 
 ---
 
-🆙 **最新更新**: 2025-08-01 - セッション自動更新機能追加、Rails 8.0.2対応
+🆙 **最新更新**: 2025-07-31 - READMEと重複する技術スタック・アーキテクチャ情報を削除し、実用コマンドに特化

@@ -176,6 +176,20 @@
           "show_next_steps": true
         }
       ]
+    },
+    "pr_creation": {
+      "enabled": true,
+      "auto_execute": true,
+      "triggers": [
+        {
+          "condition": "pr_created",
+          "action": "create_archive",
+          "message": "📚 プルリクエストが作成されました。作業内容をアーカイブに保存しています...",
+          "command": "npm run archive:create",
+          "auto_execute": true,
+          "description": "PR作成後の作業サマリー自動生成"
+        }
+      ]
     }
   },
   "user_preferences": {

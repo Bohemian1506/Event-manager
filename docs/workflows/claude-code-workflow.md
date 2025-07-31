@@ -252,6 +252,31 @@ cat .claude/hooks.json
 /consensus "提案内容を直接入力"
 ```
 
+## 📚 作業アーカイブ自動化
+
+### アーカイブ自動生成
+プルリクエスト作成後、作業内容が自動的にアーカイブとして保存されます：
+
+```bash
+# GitHub Actionsで自動実行
+# .github/workflows/archive-creation.yml
+
+# 手動でアーカイブ作成
+npm run archive:create
+```
+
+### アーカイブ内容
+- **作業概要**: 実装内容とブランチ情報
+- **ファイル変更**: カテゴリ別変更ファイル一覧
+- **技術的成果**: 実装した機能と改善点
+- **Git操作記録**: コミット・ブランチ・PR情報
+- **開発プロセス**: 使用したワークフローと品質チェック
+
+### 保存場所
+- **ディレクトリ**: `docs/archives/`
+- **ファイル名**: `YYYY-MM-DD.md` (日付ベース)
+- **テンプレート**: `docs/archives/TEMPLATE.md`
+
 ## 📚 関連ドキュメント
 
 - **[GitHub環境構築](github-setup.md)**: GitHub CLI認証設定

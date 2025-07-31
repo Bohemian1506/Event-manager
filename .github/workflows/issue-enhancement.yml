@@ -23,52 +23,59 @@ jobs:
         with:
           fetch-depth: 0
           
-      - name: Add Claude Code mention to issue
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Enhance Issue with Claude API
         env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          # Issue番号を取得
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          # Create Node.js script for Claude API call
+          cat > enhance_issue.js << 'EOF'
+          const https = require('https');
+          const { execSync } = require('child_process');
           
-          # Claude Codeにメンションしてissue詳細化を依頼
-          gh issue comment $ISSUE_NUMBER --body "@claude このIssueを EventPay Manager プロジェクト用に詳細化してください。
-
-          ## 詳細化の方針
+          const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+          const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+          const ISSUE_NUMBER = process.env.ISSUE_NUMBER;
+          const ISSUE_TITLE = process.env.ISSUE_TITLE;
+          const ISSUE_BODY = process.env.ISSUE_BODY;
           
-          1. **技術的詳細の追加**
-             - 実装に必要な技術要件を具体化
-             - 使用する技術スタック（Ruby 3.3.6, Rails 8.0.0, PostgreSQL 15等）との整合性確認
-             - 既存アーキテクチャとの関連性を明記
+          // Claude API request payload
+          const requestData = JSON.stringify({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 4000,
+            temperature: 0.3,
+            messages: [{
+              role: "user",
+              content: `あなたは EventPay Manager プロジェクトのIssue詳細化アシスタントです。
+          以下のIssueを開発に必要な詳細情報を含む完全なIssue本文に更新してください。
           
-          2. **実装方針の提案**
-             - 段階的な実装ステップを提示
-             - 各ステップの技術的詳細を説明
-             - 初学者にも理解できる説明を心がける
+          【元のIssue情報】
+          タイトル: ${ISSUE_TITLE}
+          内容: ${ISSUE_BODY}
           
-          3. **受け入れ基準の明確化**
-             - 機能完成の定義を具体的に記載
-             - テスト可能な形式で記述
-             - UI/UXの観点も含める
+          【技術スタック】
+          - Ruby 3.3.6 + Rails 8.0.0
+          - PostgreSQL 15
+          - Bootstrap 5 + Stimulus
+          - Docker環境
+          - ViewComponent
+          - SendGrid (メール)
           
-          4. **関連情報の追加**
-             - 影響を受ける既存機能の洗い出し
-             - 必要なデータベース変更の特定
-             - セキュリティ考慮事項の記載
+          【詳細化要件】
+          以下の構造で詳細なIssue本文を作成してください：
           
-          5. **ラベルとマイルストーンの提案**
-             - 適切なPhaseラベル（phase-2, phase-3, phase-4）
-             - 機能カテゴリラベル（auth, ui/ux, api, payment等）
-             - 優先度ラベル（priority-high, priority-medium, priority-low）
-          
-          ## Issue更新フォーマット
-          
-          以下の構造でIssue本文を更新してください：
-          
-          \`\`\`markdown
           ## 📋 概要
           [元の説明を基に、より詳細な説明を記載]
           
-          ## 🎯 目的・背景
+          ## 🎯 目的・背景  
           [この機能/修正が必要な理由と期待される価値]
           
           ## 📐 技術的詳細
@@ -104,24 +111,100 @@ jobs:
           - [ユーザビリティに関する考慮点]
           
           ## 🔗 関連情報
-          - 関連Issue: #[番号]
-          - 関連PR: #[番号]
-          - 参考ドキュメント: [リンク]
+          - 関連Issue: #[番号があれば]
+          - 関連PR: #[番号があれば]
+          - 参考ドキュメント: [リンクがあれば]
           
           ## 📊 推奨設定
           - **Phase**: phase-[2/3/4]
           - **カテゴリ**: [auth/ui/api/payment/notification等]
-          - **優先度**: priority-[high/medium/low]
+          - **優先度**: priority-[high/medium/low]  
           - **見積もり**: [S/M/L/XL]
           
           ---
           🤖 このIssueは Claude Code により自動的に詳細化されました
-          \`\`\`
           
-          ## 注意事項
+          【注意事項】
           - EventPay Managerは初学者向けプロジェクトなので、技術的説明は分かりやすく
           - Rails 8.0の新機能（標準認証、Solid Queue等）の活用を考慮
           - Docker環境での動作を前提とした実装方針
-          - 既存のコーディング規約（docs/setup/development-rules.md）との整合性
+          - 既存のコーディング規約との整合性を重視
           
-          \`gh issue edit\` コマンドを使用してIssue本文を上記フォーマットで更新し、適切なラベルも追加してください。"
+          上記フォーマットで、元のIssue内容を詳細化した完全なmarkdown本文を出力してください。`
+            }]
+          });
+          
+          // Claude API options
+          const options = {
+            hostname: 'api.anthropic.com',
+            port: 443,
+            path: '/v1/messages',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': ANTHROPIC_API_KEY,
+              'anthropic-version': '2023-06-01',
+              'Content-Length': Buffer.byteLength(requestData)
+            }
+          };
+          
+          // Make API request to Claude
+          const req = https.request(options, (res) => {
+            let data = '';
+            
+            res.on('data', (chunk) => {
+              data += chunk;
+            });
+            
+            res.on('end', () => {
+              try {
+                const response = JSON.parse(data);
+                
+                if (response.content && response.content[0] && response.content[0].text) {
+                  const enhancedBody = response.content[0].text;
+                  
+                  // Update GitHub Issue using gh CLI
+                  const escapedBody = enhancedBody.replace(/"/g, '\\"').replace(/`/g, '\\`');
+                  const updateCommand = `gh issue edit ${ISSUE_NUMBER} --body "${escapedBody}"`;
+                  
+                  try {
+                    execSync(updateCommand, { 
+                      env: { ...process.env, GITHUB_TOKEN },
+                      stdio: 'inherit'
+                    });
+                    console.log(`✅ Issue #${ISSUE_NUMBER} has been enhanced successfully!`);
+                    
+                    // Add success comment
+                    const commentCommand = `gh issue comment ${ISSUE_NUMBER} --body "🤖 Issue詳細化が完了しました！\\n\\n自動的に以下が追加されました：\\n- 技術的詳細と実装方針\\n- 段階的な実装ステップ\\n- テスト可能な受け入れ基準\\n- セキュリティ・パフォーマンス考慮事項\\n- 推奨ラベルと優先度"`;
+                    execSync(commentCommand, { 
+                      env: { ...process.env, GITHUB_TOKEN },
+                      stdio: 'inherit'
+                    });
+                    
+                  } catch (error) {
+                    console.error('Failed to update issue:', error.message);
+                    process.exit(1);
+                  }
+                } else {
+                  console.error('Invalid response from Claude API:', response);
+                  process.exit(1);
+                }
+              } catch (error) {
+                console.error('Failed to parse Claude API response:', error.message);
+                console.error('Response data:', data);
+                process.exit(1);
+              }
+            });
+          });
+          
+          req.on('error', (error) => {
+            console.error('Claude API request failed:', error.message);
+            process.exit(1);
+          });
+          
+          req.write(requestData);
+          req.end();
+          EOF
+          
+          # Execute the Node.js script
+          node enhance_issue.js

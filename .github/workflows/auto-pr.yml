@@ -53,9 +53,44 @@ jobs:
             PR_TITLE="$COMMIT_MSG"
           fi
           
+          # 変更ファイルの一覧を取得
+          CHANGED_FILES=$(git diff --name-only main..HEAD | head -10)
+          FILE_COUNT=$(git diff --name-only main..HEAD | wc -l)
+          
+          # PR本文を動的生成
+          PR_BODY="## 📝 変更概要
+          
+          **ブランチ**: \`$BRANCH_NAME\`
+          **コミットメッセージ**: $COMMIT_MSG
+          
+          ## 📋 変更ファイル ($FILE_COUNT件)
+          
+          \`\`\`
+          $CHANGED_FILES
+          \`\`\`
+          $(if [ $FILE_COUNT -gt 10 ]; then echo "...他 $((FILE_COUNT - 10)) ファイル"; fi)
+          
+          ## 🤖 Claude Code連携
+          
+          この PR は自動生成されました。詳細なレビューや本文の改善には以下をご利用ください：
+          
+          - **@claude** をメンションして PR のレビューを依頼
+          - **Claude Code** でコードの品質チェックや改善提案を実行
+          - **zen-mcp-server** で複数 AI による包括的な分析
+          
+          ## ✅ チェックリスト
+          
+          - [ ] コードレビューの実施
+          - [ ] テストの実行・確認
+          - [ ] ドキュメントの更新
+          - [ ] セキュリティチェック（必要に応じて）
+          
+          ---
+          *このPRは [EventPay Manager 自動化システム](docs/workflows/claude-code-workflow.md) により生成されました*"
+          
           gh pr create \
             --title "$PR_TITLE" \
-            --body "自動生成されたプルリクエストです。PR本文はClaude Codeにより自動生成されます。" \
+            --body "$PR_BODY" \
             --head "${{ github.ref_name }}" \
             --base main
             

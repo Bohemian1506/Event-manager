@@ -25,6 +25,7 @@ jobs:
       issues: write
       pull-requests: write
       actions: write
+      metadata: read
       
     steps:
       - name: Checkout repository

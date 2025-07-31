@@ -1,0 +1,74 @@
+name: Claude PR Description Generator
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  generate-pr-description:
+    runs-on: ubuntu-latest
+    # 既存のPRが auto-pr.yml で作成された場合のみ実行
+    if: github.event.pull_request.user.login == 'github-actions[bot]'
+    
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Generate PR Description with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
+            このプルリクエストの変更内容を詳細に分析し、高品質なPR本文を生成してください。
+
+            ## 分析すべき内容:
+            1. **変更ファイルの詳細**: 各ファイルの変更内容と目的
+            2. **機能概要**: 実装された機能や修正の概要
+            3. **技術的詳細**: 使用した技術やアプローチ
+            4. **影響範囲**: 他の機能への影響やリスク
+
+            ## 生成すべきPR本文の構成:
+            ```markdown
+            ## ✨ 変更概要
+            [変更の目的と概要を分かりやすく説明]
+
+            ## 📋 主要な変更
+            - [変更1: 具体的な説明]
+            - [変更2: 具体的な説明]
+            - [変更3: 具体的な説明]
+
+            ## 🛠️ 技術的詳細
+            [実装方法、技術選択の理由、設計判断について]
+
+            ## 🧪 テスト観点
+            - [ ] [テスト項目1]
+            - [ ] [テスト項目2]
+            - [ ] [テスト項目3]
+
+            ## 🔍 レビュー観点
+            [レビュー時に特に注意すべきポイント]
+
+            ## 📚 関連ドキュメント
+            [関連する設計書、仕様書、参考資料へのリンク]
+
+            ## 🤖 AI生成情報
+            この本文はClaude Codeにより自動生成されました。
+            詳細な質問や改善は @claude をメンションしてください。
+            ```
+
+            EventPay Managerプロジェクトの文脈を理解し、Rails 8.0 + PostgreSQL + Bootstrap環境での変更として適切な内容を生成してください。
+
+            現在のプルリクエスト情報:
+            - タイトル: ${{ github.event.pull_request.title }}
+            - ブランチ: ${{ github.event.pull_request.head.ref }}
+            - 作成者: ${{ github.event.pull_request.user.login }}
+
+            上記の構成に従って、このPRの本文を生成し、既存の本文を置き換えてください。

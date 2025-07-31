@@ -232,14 +232,27 @@ async function smartCommit() {
       try {
         execSync('git push', { stdio: 'inherit' });
         console.log('✅ プッシュが完了しました！');
+        console.log('');
+        console.log('🚀 次のワークフロー:');
+        console.log('  📝 PR作成: npm run pr:create');
+        console.log('  🔄 PR更新: npm run pr:update');
+        console.log('  📁 アーカイブ作成: npm run archive:create');
+        console.log('');
+        console.log('💡 ヒント:');
+        console.log('  - 新しい機能の場合は PR作成を推奨');
+        console.log('  - 既存PRの更新の場合は PR更新を使用');
+        console.log('  - 作業完了時はアーカイブ作成で記録保存');
       } catch (error) {
         console.error('❌ プッシュに失敗しました:', error.message);
       }
     } else {
       console.log('');
       console.log('💡 次のステップ:');
-      console.log('  - git push でリモートにプッシュ');
-      console.log('  - プッシュ時にプルリクエストが自動作成されます');
+      console.log('  1. git push でリモートにプッシュ');
+      console.log('  2. プッシュ後のワークフロー:');
+      console.log('     📝 PR作成: npm run pr:create');
+      console.log('     🔄 PR更新: npm run pr:update');
+      console.log('     📁 アーカイブ作成: npm run archive:create');
     }
 
   } catch (error) {

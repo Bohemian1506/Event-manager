@@ -106,8 +106,8 @@
         "matcher": "startup",
         "hooks": [
           {
-            "type": "command",
-            "command": "npm run work:start"
+            "type": "info",
+            "message": "🚀 EventPay Manager - 作業開始\n\n作業を開始する前に以下のコマンドを実行してください：\n\n`npm run work:start`\n\n実行内容:\n- mainブランチを最新化\n- 新しいブランチを対話式で作成\n- 作業環境の準備"
           }
         ]
       }

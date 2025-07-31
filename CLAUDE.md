@@ -217,3 +217,48 @@ zen-mcp-serverを使った複数AI協調開発を促進するため、以下の�
 4. **初学者配慮**: 複雑な概念は段階的に説明
 5. **品質保証**: テスト項目とレビュー観点を具体的に提示
 
+## Claude Code 作業開始自動化ルール
+
+### 作業開始時の必須実行事項
+Claude Codeでの作業開始時には、以下のプロセスが自動実行されます：
+
+#### 1. 自動実行フロー
+```bash
+# Claude Code起動時に自動実行
+npm run work:start
+```
+
+#### 2. 実行内容
+- **git:update**: mainブランチを最新化
+- **dev:branch**: 対話式でブランチタイプとタスク名を入力してブランチ作成
+- **初期設定**: 空コミット作成とリモートプッシュ
+- **ガイダンス**: AI協調開発のヒント表示
+
+#### 3. フック設定
+- **session_start**: Claude Code起動時に`npm run work:start`を自動実行
+- **first_task**: 最初のタスク時にリマインダー表示
+- **mandatory**: 作業開始準備は必須実行項目
+
+#### 4. 設定ファイル
+- `.claude/hooks.json`: work_startフック設定
+- `.claude/settings.json`: 作業開始自動化設定
+- `package.json`: work:startコマンド定義
+
+### 手動実行時の対応
+Claude Codeフックが動作しない場合の手動実行方法：
+
+```bash
+# 作業開始準備
+npm run work:start
+
+# 従来の個別実行
+npm run git:update
+npm run dev:branch
+```
+
+### 効果と目的
+1. **効率化**: 作業開始時の手順自動化で開発効率向上
+2. **品質向上**: 常に最新のmainブランチから作業開始
+3. **標準化**: 統一されたブランチ命名規則の徹底
+4. **AI協調促進**: zen-mcp-server連携のガイダンス表示
+

@@ -42,149 +42,14 @@ npm run dev:branch
 - **推奨**: Node.js 18+, GitHub CLI
 - **オプション**: zen-mcp-server（AI協調開発を活用する場合）
 
-## 🛠️ 開発
-
-### 実践的な開発フロー
-
-#### 典型的な1日の開発フロー
-```bash
-# 1. 作業開始準備
-npm run git:update          # main最新化
-npm run dev:branch          # 新ブランチ作成（対話式）
-docker-compose up -d        # 開発環境起動
-
-# 2. 実装作業
-# ファイル編集・コード作成...
-docker-compose logs -f web  # ログ監視（必要に応じて）
-
-# 3. 中間チェック
-npm run quality:check       # 品質チェック実行
-npm run security:scan       # セキュリティスキャン
-
-# 4. 作業完了・自動化
-npm run dev:commit          # 自動ステージング・コミット・プッシュ・PR作成
-
-# 5. 後片付け（マージ後）
-npm run git:clean           # マージ済みブランチ削除
-```
-
-#### 自動化システムの特徴
-- **自動PR作成**: プッシュ時にGitHub Actionsが自動でPR作成
-- **品質チェック自動実行**: RuboCop + RSpec + Brakeman
-- **対話式ブランチ作成**: 適切な命名規則でブランチ自動生成
-- **pre-pushフック**: コミット前に自動品質チェック実行
-
-### 開発支援コマンド
-
-#### 🚀 作業開始前コマンド
-```bash
-# main最新化（必須）
-npm run git:update
-
-# 現在状況確認
-git status
-git branch
-
-# 対話式ブランチ作成
-npm run dev:branch
-
-# Docker環境起動
-docker-compose up -d
-```
-
-#### 💻 作業中コマンド
-```bash
-# リアルタイムログ監視
-docker-compose logs -f web
-
-# 品質チェック（コミット前推奨）
-npm run quality:check   # RuboCop + RSpec
-
-# セキュリティスキャン
-npm run security:scan   # Brakeman
-
-# 手動テスト実行
-docker-compose exec web bundle exec rspec
-docker-compose exec web bundle exec rubocop
-
-# Rails console起動
-docker-compose exec web rails console
-```
-
-#### ✅ 作業完了コマンド
-```bash
-# 自動コミット・プッシュ・PR作成（推奨）
-npm run dev:commit
-
-# または手動でのステップ実行
-git add .
-git commit -m "feat: 実装内容の説明"
-git push
-
-# PR状況確認
-gh pr list
-gh pr view [PR番号]
-
-# マージ後のブランチクリーンアップ
-npm run git:clean
-```
-
-#### 🔧 メンテナンスコマンド
-```bash
-# Git フック再インストール
-npm run hooks:install
-
-# Docker環境リセット
-docker-compose down && docker-compose up -d
-
-# データベースリセット（危険）
-docker-compose exec web rails db:drop db:create db:migrate
-```
-
-## 🤖 AI協調開発
-
-### zen-mcp-server活用例
-
-EventPay Managerでは複数AI協調開発を積極的に活用：
-
-#### 自動提案されるケース
-```bash
-# 新機能実装時
-"複数AI協調開発の提案: 新機能実装では設計検討が効果的です。/consensusで設計合意を形成しませんか？"
-
-# コミット前
-"コミット前の品質チェックを実行します。/precommitで包括的なチェックを行いませんか？"
-
-# セキュリティ関連コード
-"セキュリティに関わるコードです。/secauditでセキュリティ監査を実行しませんか？"
-
-# 複雑なバグ・エラー
-"複雑な問題の根本原因分析が必要です。/debugで詳細分析を実行しませんか？"
-```
-
-#### 利用可能なツール
-- **新機能設計**: `/consensus` - 複数AIでの設計合意形成
-- **バグ修正**: `/debug` - 根本原因の詳細分析
-- **セキュリティ**: `/secaudit` - 包括的セキュリティ監査
-- **品質チェック**: `/precommit` - コミット前総合チェック
-- **コードレビュー**: `/codereview` - 詳細なコード分析
-- **リファクタリング**: `/refactor` - 改善提案と実装
-
-詳細は [AI開発ルール](docs/ai-development/ai-development-rules.md) を参照
-
-## 🏗️ アーキテクチャ
+## 🏗️ 技術情報
 
 ### 技術スタック
 - **Backend**: Ruby 3.3.6 + Rails 8.0.2
 - **Database**: PostgreSQL 15
-- **Frontend**: Bootstrap 5.3 + Stimulus + jQuery
-- **CSS**: Sass + CSS Bundling
+- **Frontend**: Bootstrap 5.3 + Stimulus
 - **Components**: ViewComponent
 - **Email**: SendGrid
-- **Queue**: Solid Queue (Rails 8標準)
-- **Cache**: Solid Cache (Rails 8標準)
-- **Deployment**: Kamal + Thruster
-- **Asset Pipeline**: Propshaft + Importmap
 
 ### 認証システム
 - **幹事**: Rails 8標準認証（メール+パスワード）
@@ -198,6 +63,32 @@ users (幹事)
 │   └── participants (参加者)
 │       └── participations (参加状況)
 ```
+
+## 🛠️ 開発
+
+### 基本的な開発フロー
+```bash
+# 1. 作業開始
+npm run work:start:cli <type> <task-name>
+
+# 2. 実装・テスト
+# ファイル編集、動作確認...
+
+# 3. コミット・PR作成
+npm run dev:commit
+```
+
+詳細な開発コマンドは [クイックリファレンス](docs/development/quick-reference.md) を参照してください。
+
+## 🤖 AI協調開発
+
+zen-mcp-serverを活用した複数AI協調開発をサポート：
+- **設計検討**: `/consensus` - 複数AIでの合意形成
+- **品質チェック**: `/precommit` - コミット前総合チェック  
+- **セキュリティ監査**: `/secaudit` - 包括的セキュリティ分析
+- **バグ分析**: `/debug` - 根本原因の詳細分析
+
+詳細は [AI開発ルール](docs/ai-development/ai-development-rules.md) を参照してください。
 
 ## 📂 プロジェクト構造
 ```
@@ -223,43 +114,14 @@ eventpay_manager/
 
 ## 🔧 設定
 
-### 環境変数
-```bash
-# .env.local
-SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
-APP_DOMAIN=eventpay.example.com
-DATABASE_URL=postgresql://user:pass@localhost/eventpay_manager_development
-```
+環境変数の設定やGitHub環境構築は [セットアップガイド](docs/setup/setup.md) を参照してください。
 
-### GitHub環境設定
-1. [GitHub CLI設定](docs/workflows/github-setup.md)
-2. [GitHub Actions設定](docs/workflows/github-workflow.md)
-3. [Claude Code統合](docs/workflows/claude-code-workflow.md)
-
-## 🧪 テスト
+## 🧪 テスト・セキュリティ
 
 ```bash
-# 全テスト実行
-docker-compose exec web bundle exec rspec
-
-# システムテスト実行
-docker-compose exec web bundle exec rspec spec/system
-
-# 特定テスト実行
-docker-compose exec web bundle exec rspec spec/models/user_spec.rb
-```
-
-## 🛡️ セキュリティ
-
-```bash
-# セキュリティスキャン
-docker-compose exec web bundle exec brakeman
-
-# 依存関係チェック  
-docker-compose exec web bundle audit
-
-# JavaScript依存関係チェック
-bin/importmap audit
+# 品質チェック（テスト+セキュリティ）
+npm run quality:check
+npm run security:scan
 ```
 
 ## 📋 主要機能
@@ -308,42 +170,14 @@ bin/importmap audit
 ## 🤝 コントリビューション
 
 1. **Issue作成**: [GitHub Issues](../../issues) でバグ報告・機能要望
-2. **開発参加**: フォーク→ブランチ作成→実装→PR作成
-3. **ドキュメント改善**: ドキュメントの修正・追加
+2. **開発参加**: `npm run work:start:cli <type> <task-name>` で開始
+3. **PR作成**: `npm run dev:commit` で自動作成
 
-### 開発フロー
-```bash
-# 1. ブランチ作成
-npm run dev:branch
+## 📞 サポート・リンク
 
-# 2. 実装
-# コード作成・編集
-
-# 3. テスト作成・実行
-# テストコード作成・実行
-
-# 4. コミット・PR作成
-npm run dev:commit
-# → 自動PR作成・品質チェック実行
-```
-
-## 📄 ライセンス
-
-このプロジェクトは [MIT License](LICENSE) の下で公開されています。
-
-## 🔗 関連リンク
-
-- **メイン**: [GitHub Repository](../../)
 - **Issues**: [GitHub Issues](../../issues) - バグ報告・機能要望
 - **Discussions**: [GitHub Discussions](../../discussions) - 質問・相談
-- **Actions**: [GitHub Actions](../../actions) - CI/CD状況
-- **Wiki**: [GitHub Wiki](../../wiki) - 詳細ドキュメント
-
-## 📞 サポート
-
-- **Issues**: [GitHub Issues](../../issues)
-- **Discussions**: [GitHub Discussions](../../discussions)
-- **Wiki**: [GitHub Wiki](../../wiki)
+- **License**: [MIT License](LICENSE)
 
 ---
 

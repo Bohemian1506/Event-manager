@@ -6,11 +6,15 @@
 
 ### 作業開始
 ```bash
-# 対話式（ブランチタイプとタスク名を入力）
+# Claude連携型スマートワークフロー（推奨）
 npm run work:start
 
 # 非対話式（Claude Code推奨）
 npm run work:start:cli <type> <task-name>
+
+# 手動操作
+npm run work:start:manual    # 旧CLI版
+npm run work:start:interactive  # 対話式
 
 # 例
 npm run work:start:cli feature add-user-authentication
@@ -20,8 +24,14 @@ npm run work:start:cli docs update-readme
 
 ### 作業完了
 ```bash
-# 対話式コミット・プッシュ
+# スマートコミット（推奨）
 npm run dev:commit
+
+# 手動コミット
+npm run dev:commit:manual
+
+# プッシュのみ
+npm run dev:push
 ```
 
 ## 🎯 ブランチタイプ
@@ -43,6 +53,10 @@ docker-compose up -d
 docker-compose exec web rails db:create
 docker-compose exec web rails db:migrate
 
+# 依存関係インストール
+docker-compose exec web bundle install
+npm install
+
 # アプリ確認
 # http://localhost:3000
 ```
@@ -57,15 +71,24 @@ npm run git:clean
 
 # ブランチ作成のみ
 npm run dev:branch:cli <type> <task-name>
+npm run dev:branch  # 対話式
+
+# Git hooks設定
+npm run hooks:install
 ```
 
 ### 品質チェック
 ```bash
 # コード品質・テスト実行
 npm run quality:check
+# 実行内容: rubocop + rspec
 
 # セキュリティスキャン
 npm run security:scan
+# 実行内容: brakeman --no-pager
+
+# CSSビルド
+npm run build:css
 ```
 
 ### PR・アーカイブ
@@ -84,18 +107,23 @@ npm run archive:create
 
 ### 基本構成
 - **Ruby**: 3.3.6
-- **Rails**: 8.0.0 (標準認証)
-- **Database**: PostgreSQL 15
+- **Rails**: 8.0.2 (標準認証)
+- **Database**: PostgreSQL 15-alpine
 - **CSS**: Bootstrap 5.3
-- **JS**: Stimulus
+- **JS**: Stimulus + Importmap
 - **Mail**: SendGrid
+- **Assets**: Propshaft + CSS Bundling
 
 ### 主要Gem
 - **view_component**: コンポーネント管理
+- **jquery-rails** + **bootstrap-icons-helper**: UI補強
 - **rails-i18n** + **enum_help**: 日本語化
+- **sendgrid-ruby**: メール送信
 - **rqrcode**: QRコード生成
-- **solid_queue** + **solid_cache**: Rails 8標準
-- **rspec-rails** + **factory_bot_rails**: テスト
+- **solid_queue** + **solid_cache** + **solid_cable**: Rails 8標準
+- **rspec-rails** + **factory_bot_rails** + **faker**: テスト
+- **rubocop-rails-omakase**: コード品質
+- **brakeman**: セキュリティ監査
 
 ## 🏗️ アーキテクチャ
 
@@ -168,35 +196,79 @@ npm run archive:create
 
 ### よくある問題
 ```bash
-# Docker関連
+# Dockerコンテナ再起動
 docker-compose down && docker-compose up -d
 
-# DB関連
+# DBリセット（全データ削除注意）
 docker-compose exec web rails db:drop db:create db:migrate
 
-# 依存関係
+# 依存関係更新
 docker-compose exec web bundle install
 npm install
+
+# CSSビルドエラー
+npm run build:css
+
+# コンテナ再ビルド（イメージ更新時）
+docker-compose build --no-cache
 ```
 
 ### ログ確認
 ```bash
 # アプリケーションログ
 docker-compose logs web
+docker-compose logs -f web  # リアルタイム追跡
 
 # データベースログ
 docker-compose logs db
+
+# 全サービスログ
+docker-compose logs
+
+# Railsコンソール
+docker-compose exec web rails console
+
+# DBコンソール
+docker-compose exec web rails dbconsole
 ```
 
 ## 🎯 開発フロー
 
+### 基本フロー
 1. **作業開始**: `npm run work:start:cli <type> <task-name>`
 2. **実装・テスト**: コード編集、動作確認
 3. **品質チェック**: `npm run quality:check`
 4. **コミット**: `npm run dev:commit`
-5. **PR確認**: GitHub Actions自動作成
+5. **PR作成**: `npm run pr:create` または GitHub Actions自動作成
 6. **レビュー**: `@claude` メンションで依頼
 7. **マージ**: レビュー完了後、mainへマージ
+
+### 品質管理フロー
+- **コード品質**: rubocop-rails-omakase
+- **テスト**: rspec + factory_bot + faker
+- **セキュリティ**: brakeman監査
+- **AIサポート**: zen-mcp-server `/precommit`
+
+---
+
+## 🚀 クイックスタート
+
+```bash
+# 1. 作業開始
+npm run work:start:cli docs update-readme
+
+# 2. 開発環境起動
+docker-compose up -d
+
+# 3. 品質チェック
+npm run quality:check
+
+# 4. コミット・プッシュ
+npm run dev:commit
+
+# 5. PR作成
+npm run pr:create
+```
 
 ---
 
@@ -204,3 +276,5 @@ docker-compose logs db
 - 開発時は常にこのドキュメントを参照
 - 新しいコマンドを追加したらここにも記載
 - 不明点は`@claude`に質問
+
+🆙 **最新更新**: 2025-07-31 - Rails 8.0.2対応、npmスクリプト更新

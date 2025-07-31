@@ -55,6 +55,63 @@
       }
     }
   },
+  "hooks": {
+    "PostCommand": [
+      {
+        "matcher": "npm run dev:commit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "gh pr create --draft --title 'Auto PR: $(git branch --show-current)' --body 'Automatically created PR after dev:commit completion.'"
+          }
+        ]
+      }
+    ],
+    "PRMerged": [
+      {
+        "matcher": "main",
+        "hooks": [
+          {
+            "type": "info",
+            "message": "📝 アーカイブ自動生成\n\nプルリクエストがマージされました。GitHub Actionsにより作業サマリーが `docs/archives/` に自動保存されます。\n\n生成内容:\n- 作業概要とブランチ情報\n- 変更ファイル一覧\n- Git操作記録\n- 技術的成果"
+          }
+        ]
+      }
+    ],
+    "WorkflowSuggestion": [
+      {
+        "matcher": "implementation_complete",
+        "hooks": [
+          {
+            "type": "suggest",
+            "message": "🚀 作業完了の提案\n\nファイルの変更が完了しました。作業を完了しますか？\n\n`npm run dev:commit` を実行して対話式コミット・プッシュを行い、自動的にプルリクエストを作成します。\n\n実行する場合は「yes」または「y」と入力してください。",
+            "command": "npm run dev:commit"
+          }
+        ]
+      },
+      {
+        "matcher": "file_changes_detected",
+        "hooks": [
+          {
+            "type": "suggest",
+            "message": "📝 変更ファイルが検出されました\n\n作業が完了している場合は、以下のコマンドで作業を完了できます：\n\n`npm run dev:commit`\n\n実行しますか？ (yes/y で実行)",
+            "command": "npm run dev:commit"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm run work:start"
+          }
+        ]
+      }
+    ]
+  },
   "workflows": {
     "github_actions": {
       "auto_pr_workflow": ".github/workflows/auto-pr.yml",

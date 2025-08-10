@@ -5,4 +5,5 @@ class Event < ApplicationRecord
 
   validates :name, presence: true
   validates :date, presence: true
+  validates :share_token, presence: true, uniqueness: true
 end
